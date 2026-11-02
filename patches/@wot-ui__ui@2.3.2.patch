@@ -1,0 +1,22 @@
+diff --git a/composables/useLockScroll.ts b/composables/useLockScroll.ts
+index 89b32036724fe1f9865a4260b8d5e614b1ef3f8d..6db7f5e09c4274ce655ecc6e7ff5da7a6cba46c5 100644
+--- a/composables/useLockScroll.ts
++++ b/composables/useLockScroll.ts
+@@ -5,7 +5,7 @@ export function useLockScroll(shouldLock: () => boolean) {
+ 
+   const lock = () => {
+     if (scrollLockCount.value === 0) {
+-      document.getElementsByTagName('body')[0].style.overflow = 'hidden'
++      ;(document as any).body.style.overflow = 'hidden'
+     }
+     scrollLockCount.value++
+   }
+@@ -14,7 +14,7 @@ export function useLockScroll(shouldLock: () => boolean) {
+     if (scrollLockCount.value > 0) {
+       scrollLockCount.value--
+       if (scrollLockCount.value === 0) {
+-        document.getElementsByTagName('body')[0].style.overflow = ''
++        ;(document as any).body.style.overflow = ''
+       }
+     }
+   }

@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+/* 只扫描业务源码，避免第三方依赖与构建产物被误识别为 class */
+@source "./**/*.{html,js,ts,jsx,tsx,vue}";
+@source not "./uni_modules";
+@source not "../node_modules";
+@source not "../dist";
+@source not "../unpackage";
+
+/* ============================================================
+ * CNode Next 深色主题设计 tokens
+ * 逐值取自 cnodejs.org 深色模式 CSS 变量（oklch → sRGB），
+ * 主色 --primary oklch(83.85% .209 129.52) 即品牌亮绿 #9de330（用户钦定）。
+ * ============================================================ */
+@theme {
+  /* 品牌绿 */
+  --color-primary: #9de330; /* 亮绿：主按钮底/tab 选中/强调 */
+  --color-primary-fg: #071207; /* 亮绿上的文字（= background） */
+  --color-primary-dark: #7fb526; /* 亮绿按压态 */
+  --color-primary-soft: #1e3516; /* CNode accent：绿底弱化选中 */
+
+  /* 深色中性阶（CNode Next dark 变量同源） */
+  --color-page: #071207; /* 页面背景 */
+  --color-card: #0d1a0b; /* 卡片/列表容器 */
+  --color-card-hover: #142412; /* 卡片按压/悬浮 */
+  --color-ink-900: #edf8e7; /* 一级文字（foreground） */
+  --color-ink-700: #d5e4cc; /* 二级文字 */
+  --color-ink-600: #9eb092; /* 三级文字（muted-foreground） */
+  --color-ink-400: #6a7664; /* 弱化文字 */
+  --color-muted: #172813; /* 标签底/输入底（muted/secondary） */
+  --color-muted-fg: #e2f2d8; /* muted 底上的文字（secondary-foreground） */
+  --color-line: rgba(255, 255, 255, 0.08); /* 分隔线（border = white/10 的收敛版） */
+  --color-danger: #f26d5f; /* 深底可读的危险红 */
+
+  /* 小号标签字号（tailwind v4 默认无 2xs） */
+  --text-2xs: 11px;
+  --text-2xs--line-height: 15px;
+  --text-xs: 12px;
+  --text-xs--line-height: 17px;
+}
+
+/* ============================================================
+ * 全局根样式：深色前景/背景（对齐 CNode Next dark）
+ * ============================================================ */
+page,
+:root,
+body,
+uni-page-body {
+  color: #edf8e7;
+  background-color: #071207;
+}
+
+/* ============================================================
+ * wot-ui 深色主题变量覆盖（全局生效：H5 :root / 小程序与 App page）
+ * primary 刻度 1-10 由浅到深，跟随品牌亮绿 #9de330
+ * ============================================================ */
+page,
+:root {
+  --wot-primary-1: #1e3516;
+  --wot-primary-2: #244017;
+  --wot-primary-3: #2d5019;
+  --wot-primary-4: #3f6a1c;
+  --wot-primary-5: #6da212;
+  --wot-primary-6: #9de330;
+  --wot-primary-7: #b2ea5e;
+  --wot-primary-8: #c6f18d;
+  --wot-primary-9: #d9f7bb;
+  --wot-primary-10: #ecfce8;
+
+  /* 主按钮：亮绿底 + 深绿字（CNode Next 按钮样式），按压深一档 */
+  --wot-button-primary-bg: #9de330;
+  --wot-button-primary-bg-active: #7fb526;
+  --wot-button-primary-color: #071207;
+  --wot-button-primary-color-active: #071207;
+  /* plain 主按钮：深底绿字绿边 */
+  --wot-button-primary-plain-bg: transparent;
+  --wot-button-primary-plain-bg-active: #1e3516;
+  --wot-button-primary-plain-border: #9de330;
+  --wot-button-primary-plain-border-active: #7fb526;
+  /* soft 主按钮：深绿底亮绿字 */
+  --wot-button-primary-soft-bg: #1e3516;
+  --wot-button-primary-soft-bg-active: #2d5019;
+
+  /* info/success 跟随深色语义 */
+  --wot-button-info-bg: #172813;
+  --wot-button-info-color: #e2f2d8;
+  --wot-button-success-bg: #9de330;
+  --wot-button-success-color: #071207;
+  --wot-button-danger-bg: #f26d5f;
+  --wot-button-danger-color: #071207;
+
+  /* 输入/文本域：深底浅字（发布页/登录页） */
+  --wot-input-bg: #172813;
+  --wot-input-color: #edf8e7;
+  --wot-input-placeholder-color: #6a7664;
+  --wot-input-icon-color: #6a7664;
+  --wot-input-count-color: #6a7664;
+  --wot-textarea-bg: #172813;
+  --wot-textarea-color: #edf8e7;
+  --wot-textarea-placeholder-color: #6a7664;
+  --wot-textarea-count-color: #6a7664;
+}
+
+/* ============================================================
+ * 通用细节（better-ui，深色模式）
+ * ============================================================ */
+/* mp-html 服务端正文：深底浅字 + 链接品牌绿 */
+.mp-html {
+  color: #edf8e7;
+}
+.mp-html a,
+.mp-html .a {
+  color: #9de330;
+}
+/* 深色模式下正文图片/头像用白色低透明描边（better-ui：纯白而非有色灰） */
+.mp-html img {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* mp-html 内 highlight.js 代码着色：照抄 CNode Next 的 hljs 定制规则 */
+.hljs {
+  color: #edf8e7;
+  background-color: transparent;
+}
+.hljs-quote {
+  color: #9eb092;
+  font-style: italic;
+}
+.hljs-tag {
+  color: #4076f5;
+}
+.hljs-deletion {
+  color: #31aa40;
+}
+.hljs-attr {
+  color: #dd881b;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* 图片/头像 1px 低透明度描边（深色模式：纯白 10%） */
+.topic-avatar {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* 列表条目按压反馈：底色 + 轻微下压 */
+.press-card {
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.15s ease-out;
+}
+.press-card:active {
+  transform: scale(0.98);
+  background-color: #142412;
+}
+
+/* 圆形操作按钮按压反馈（scale 0.96） */
+.press-fab {
+  transition: transform 0.15s ease-out;
+}
+.press-fab:active {
+  transform: scale(0.96);
+}
